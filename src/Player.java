@@ -179,4 +179,10 @@ public class Player {
         game.getPlayers().remove(this);
         System.out.println("Player " + this.getPlayerName() + " has left the game");
     }
+
+    public ArrayList<Card> getPlayerHand() {
+        return playerHand;
+    }
+
+    //make array list
 }

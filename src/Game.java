@@ -8,28 +8,17 @@ public class Game {
     private String gameMode;
     private String recentPlayer;
 
-    Game(int playerNum, Deck deck){
+    Game(ArrayList<String> namePlayer, Deck deck){
         // Constructor of the game
         gameMode = "";
         cardUsed = new ArrayList<>();
         players = new ArrayList<>();
         cardDeck = deck;
         recentPlayer = "";
-        for(int p = 0; p < playerNum; p++){
-            // Enter the players' name for playerNum times (based on the input)
-            System.out.println("Enter player name");
-            System.out.print(">>>");
-            Scanner playerName = new Scanner(System.in);
-            String getPlayerName = playerName.nextLine();
-            while (getPlayerName.length() == 0){
-                // Looping when the player has entered the empty string for the name
-                System.out.println("The name cannot be empty!");
-                System.out.println("Enter player name");
-                System.out.print(">>>");
-                getPlayerName = playerName.nextLine();
+        for(int p = 0; p < namePlayer.size(); p++){
+            // Enter the players' name for numPlayer times (based on the input
+                players.add(new Player(namePlayer.get(p)));
             }
-            players.add(new Player(getPlayerName));
-        }
         for (int c = 0; c < 8; c++){
             // Draw the card until the players in the game have 8 card each
             for (Player player : players){
@@ -185,5 +174,11 @@ public class Game {
         }
         return anotherTurn;
     }
+
+    public ArrayList<Card> getCardUsed() {
+        return cardUsed;
+    }
+
+    // add the array
 
 }

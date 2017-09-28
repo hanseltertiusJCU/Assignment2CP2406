@@ -60,20 +60,20 @@ public class Main {
             System.out.println("Message: " + e.getMessage());
         }
         Deck deck = new Deck(listCard);
-        Game game = new Game(numPlayer, deck);
-        int counter = 0;
-        while (game.getPlayers().size() > 1){
-            // Loop until there is only a player left
-            int playerNum = counter%game.getPlayers().size();
-            if(game.getCardDeck().getCardDeckContent().size() == 0) {
-                game.restoreDeck();
-            }
-            else{
-
-                game.getPlayers().get(playerNum).playerTurn(game); // Using the turn for the players
-                counter += 1;
-            }
-        }
-        System.out.println("The game is over, the loser is " + game.getPlayers().get(0).getPlayerName());
+//        Game game = new Game(numPlayer, deck);
+//        int counter = 0;
+//        while (game.getPlayers().size() > 1){
+//            // Loop until there is only a player left
+//            int playerNum = counter%game.getPlayers().size();
+//            if(game.getCardDeck().getCardDeckContent().size() == 0) {
+//                game.restoreDeck();
+//            }
+//            else{
+//
+//                game.getPlayers().get(playerNum).playerTurn(game); // Using the turn for the players
+//                counter += 1;
+//            }
+//        }
+//        System.out.println("The game is over, the loser is " + game.getPlayers().get(0).getPlayerName());
     }
 }
