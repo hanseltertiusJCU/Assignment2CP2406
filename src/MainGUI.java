@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class MainGUI extends JFrame implements ActionListener {
-    JLabel gameGuide = new JLabel("Enter the number of player");
+    JLabel gameGuide = new JLabel("Enter the number of players");
     JPanel mainScreen = new JPanel();
     JButton threePlayers = new JButton("3");
     JButton fourPlayers = new JButton("4");
@@ -24,7 +24,7 @@ public class MainGUI extends JFrame implements ActionListener {
     JPanel cardsInHand = new JPanel(new GridLayout(2,8));
     ImageIcon deckCover = new ImageIcon("images\\Slide65.jpg");
     JButton deckCard = new JButton(new ImageIcon(deckCover.getImage().getScaledInstance(200,300,Image.SCALE_SMOOTH)));
-    JLabel lastCard = new JLabel("No Card played previously");
+    JLabel recentCard = new JLabel("No Card played previously");
     JButton hardnessCategory = new JButton("Hardness");
     JButton specificGravityCategory = new JButton("Specific Gravity");
     JButton cleavageCategory = new JButton("Cleavage");
@@ -74,7 +74,7 @@ public class MainGUI extends JFrame implements ActionListener {
             int y=1;
             while ((string = reader.readLine()) != null){
                 array = string.split(",");
-                ImageIcon image = new ImageIcon("images\\Slide"+(y)+".jpg");
+                ImageIcon image = new ImageIcon("images\\Slide"+y+".jpg");
                 cardList.add(new MineralWithPic(array[0],Float.valueOf(array[1]),Float.valueOf(array[2]),array[3],array[4],array[5],new ImageIcon(image.getImage().getScaledInstance(200,300,Image.SCALE_SMOOTH))));
                 y++;
             }
@@ -124,17 +124,24 @@ public class MainGUI extends JFrame implements ActionListener {
             if(playerDoneCount < numberOfPlayers)
             {
                 String name = playerName.getText();
-                playersList.add(name);
-                playerDoneCount+=1;
-                gameGuide.setText("Enter player "+playerDoneCount+" name");
-                playerName.setText("");
+                //Add the player
+                if (!(name.equals(""))){
+                    playersList.add(name);
+                    playerDoneCount+=1;
+                    gameGuide.setText("Enter player "+playerDoneCount+" name");
+                    playerName.setText("");
+                }
+
             }
             else
             {
                 String name = playerName.getText();
-                playersList.add(name);
-                tableGame = new Game(playersList,gameDeck);
-                pickTrump();
+                if (!(name.equals(""))){
+                    playersList.add(name);
+                    tableGame = new Game(playersList,gameDeck);
+                    pickTrump();
+                }
+
             }
         }
         else if(e.getSource()==hardnessCategory)
@@ -249,6 +256,13 @@ public class MainGUI extends JFrame implements ActionListener {
         mainScreen.removeAll();
         mainScreen.add(playerName);
         mainScreen.add(playerDone);
+        while (gameGuide.getText().equals("")){
+            gameGuide.setText("Enter player "+playerDoneCount+" name");
+            mainScreen.removeAll();
+            mainScreen.add(playerName);
+            mainScreen.add(playerDone);
+        }
+
     }
 
     public void playCard()
@@ -256,6 +270,7 @@ public class MainGUI extends JFrame implements ActionListener {
         if(tableGame.getPlayers().get(playerTurn%tableGame.getPlayers().size()).getPlayerName().equals(tableGame.getRecentPlayer())&& passCount == tableGame.getPlayers().size()-1)
         {
             pickTrump();
+            recentCard = new JLabel("No Card played previously");
         }
         else {
             int playerInTurnX = playerTurn % (tableGame.getPlayers().size());
@@ -267,7 +282,7 @@ public class MainGUI extends JFrame implements ActionListener {
             gameScreen.add(tableScreen);
             gameScreen.add(cardsInHand);
             tableScreen.add(deckCard);
-            tableScreen.add(lastCard);
+            tableScreen.add(recentCard);
             for (int x = 0; x < tableGame.getPlayers().get(playerInTurnX).getPlayerHand().size(); x++) {
                 if (tableGame.getPlayers().get(playerInTurnX).getPlayerCard(x) instanceof Mineral) {
                     JButton cardButton = new JButton(new ImageIcon(((MineralWithPic) tableGame.getPlayers().get(playerInTurnX).getPlayerCard(x)).getImageCard().getImage()));
@@ -288,6 +303,7 @@ public class MainGUI extends JFrame implements ActionListener {
                                                                     if(tableGame.getGameMode().equals("CHOICE")) {
                                                                         tableGame.putCardToGame(cardplayed);
                                                                         tableGame.getPlayers().get(playerTurn % tableGame.getPlayers().size()).getPlayerHand().remove(listOfJButtons.indexOf(buttonSource));
+                                                                        recentCard = new JLabel(new ImageIcon(((SuperTrumpsWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
                                                                         if(tableGame.getPlayers().get(playerTurn%tableGame.getPlayers().size()).getPlayerHand().size()==0)
                                                                         {
                                                                             playerTurn = playerTurn%tableGame.getPlayers().size();
@@ -344,9 +360,9 @@ public class MainGUI extends JFrame implements ActionListener {
                                                                             else {
                                                                                 playerTurn++;
                                                                                 if (tableGame.getRecentCard() instanceof SuperTrumps) {
-                                                                                    lastCard = new JLabel(new ImageIcon(((SuperTrumpsWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
+                                                                                    recentCard = new JLabel(new ImageIcon(((SuperTrumpsWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
                                                                                 } else {
-                                                                                    lastCard = new JLabel(new ImageIcon(((MineralWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
+                                                                                    recentCard = new JLabel(new ImageIcon(((MineralWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
                                                                                 }
                                                                                 pickMode = false;
                                                                                 passCount = 0;
@@ -374,9 +390,9 @@ public class MainGUI extends JFrame implements ActionListener {
                                                                             else {
                                                                                 playerTurn++;
                                                                                 if (tableGame.getRecentCard() instanceof SuperTrumps) {
-                                                                                    lastCard = new JLabel(new ImageIcon(((SuperTrumpsWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
+                                                                                    recentCard = new JLabel(new ImageIcon(((SuperTrumpsWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
                                                                                 } else {
-                                                                                    lastCard = new JLabel(new ImageIcon(((MineralWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
+                                                                                    recentCard = new JLabel(new ImageIcon(((MineralWithPic) tableGame.getRecentCard()).getImageCard().getImage()));
                                                                                 }
                                                                                 pickMode = false;
                                                                                 passCount = 0;
@@ -409,7 +425,7 @@ public class MainGUI extends JFrame implements ActionListener {
     {
         boolean higherScore = false;
         int difference = 0;
-        if(passCount == tableGame.getPlayers().size()-1 || tableGame.getCardUsed().size()==0 || pickMode )
+        if(passCount == tableGame.getPlayers().size()-1 || tableGame.getCardUsed().size()==0 || pickMode)
         {
             if(card  instanceof SuperTrumps)
             {
@@ -450,7 +466,7 @@ public class MainGUI extends JFrame implements ActionListener {
             }
             else
             {
-                tableGame.setGameMode(((SuperTrumps) card).cardEffect());       
+                tableGame.setGameMode(((SuperTrumps) card).cardEffect());
                 higherScore = true;
             }
         }
@@ -467,7 +483,7 @@ public class MainGUI extends JFrame implements ActionListener {
             String show = "No "+(x+1)+ ". " + winners.get(x) +"";
             listOfwinnerss.add(new JLabel(show));
         }
-        gameGuide.setText("Here are the winnerss:");
+        gameGuide.setText("Here are the winners:");
         mainScreen.add(listOfwinnerss);
     }
 }
