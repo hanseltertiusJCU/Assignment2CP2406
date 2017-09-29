@@ -35,19 +35,19 @@ public class Game {
         // To specify the game mode
         String gameMsg = "";
         if (gameMode.equals("HARD")){
-            gameMsg = "This is a game of hardness";
+            gameMsg = "Hardness";
         }
         else if (gameMode.equals("SPECGRAV")){
-            gameMsg = "This is a game of specific gravity";
+            gameMsg = "Specific Gravity";
         }
         else if (gameMode.equals("ECO")){
-            gameMsg = "This is a game of economic value";
+            gameMsg = "Economic Value";
         }
         else if (gameMode.equals("ABU")){
-            gameMsg = "This is a game of crystal abundance";
+            gameMsg = "Crystal Abundance";
         }
         else if (gameMode.equals("CLE")){
-            gameMsg = "This is a game of cleavage";
+            gameMsg = "Cleavage";
         }
         return gameMsg;
     }

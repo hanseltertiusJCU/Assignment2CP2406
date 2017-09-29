@@ -78,7 +78,7 @@ public class Player {
                         if(lookAtWinCard()) { // Check whether or not the player has the winning card, which is Magnetite
                             for (Card cardInHand : playerHand) {
                                 game.putCardToGame(cardInHand);
-                                playerHand.remove((cardInHand));
+                                playerHand.remove(cardInHand);
                                 game.setRecentPlayer(this.getPlayerName());
                             }
                             game.setGameMode("SPECGRAV"); // Change the game mode to Specific Gravity
